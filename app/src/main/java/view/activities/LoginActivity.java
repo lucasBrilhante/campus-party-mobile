@@ -1,4 +1,4 @@
-package cpbr11.campuseromobile;
+package view.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cpbr11.campuseromobile.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
