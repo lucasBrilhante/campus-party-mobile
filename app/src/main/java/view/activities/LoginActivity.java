@@ -2,6 +2,8 @@ package view.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Credentials;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -22,9 +24,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import cpbr11.campuseromobile.R;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 /**
  * A login screen that offers login via email/password.
@@ -42,102 +48,118 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mEmailSignInButton.setOnClickListener(this);
     }
 
-    String client_id = "q0FbZjHAvlB4dxQp8cNpWrK3X85BxSuBq4NgARPf";
-    String secret_key = "19QXI8Et5YM4ktmsapdsW5JWtIVObaw0VixSV06shSpqMXkW" +
+    final String REDIRECT_URL = "https://campuseroMobile.com/callback";
+
+    final String CLIENT_ID = "q0FbZjHAvlB4dxQp8cNpWrK3X85BxSuBq4NgARPf";
+    final String SECRET_KEY = "19QXI8Et5YM4ktmsapdsW5JWtIVObaw0VixSV06shSpqMXkW" +
             "XnFhezONi0Y1D5w8bwd9Qmd7dsmiMxDH6gLCnj6APSXDkAGTbaMo30fd6oi" +
             "x4Tm6Ny47hA7CaF2GGcPm";
-
-    private void postRequest(String url, final String authCode) {
-        System.out.println(url);
-        System.out.println(authCode);
-
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        //this is the url where you want to send the request
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.v("LoginActivity", "Response: " + response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("LoginActivity", "Error: " + error);
-            }
-        }) {
-            //adding parameters to the request
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("grant_type", "authorization_code");
-                params.put("redirect_uri", "https://campuseroMobile.com/callback/");
-                params.put("code", authCode);
-
-                System.out.println(params);
-
-                return params;
-            }
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Authorization",
-                        String.format("Basic %s", Base64.encodeToString(
-                                String.format("%s:%s", "<client_id>", "<secret_key>").getBytes(), Base64.DEFAULT)));
-                params.put("client_id" , client_id);
-                params.put("secret_key" , secret_key);
-
-                System.out.println(params);
-                return params;
-            }
-        };
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.email_sign_in_button) {
-            String url = "https://sandboxaccounts.campuse.ro/o/authorize/?" +
-                    "response_type=code&client_id=q0FbZjHAvlB4dxQp8c" +
-                    "NpWrK3X85BxSuBq4NgARPf&redirect_uri=https://campuseroMobile.com/callback";
+            Intent intent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(ServiceGenerator.API_BASE_URL + "/authorize" + "?client_id=" + CLIENT_ID + "&redirect_uri=" + REDIRECT_URL + "&response_type=code"));
+            startActivity(intent);
+        }
+    }
 
-            final WebView webview = new WebView(this);
+    private void authenticateUser(final VolleyCallback volleyCallback, final String code) {
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-            webview.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        String regex = "code=(.+)";
-                        Pattern p = Pattern.compile(regex);
+        String URL = "https://sandboxaccounts.campuse.ro/o/token/";
 
-                        Matcher m = p.matcher(url);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(response);
+                        volleyCallback.onResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        volleyCallback.onErrorResponse(error);
+                    }
+                }) {
 
-                        if (m.find()) {
-                            Log.v("LoginActivity", "code: " + m.group(1));
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params=new HashMap<String,String>();
+                params.put("grant_type","authorization_code");
+                params.put("code", code);
+                params.put("client_id", CLIENT_ID);
+                params.put("client_secret", SECRET_KEY);
+                params.put("redirect_uri", REDIRECT_URL);
+                return params;
+            }
 
-                            Intent after_login_intent = new Intent(getApplicationContext(),
-                                    LoginActivity.class);
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers=new HashMap<String,String>();
+                headers.put("Accept","application/json");
+                headers.put("Content-Type","application/x-www-form-urlencoded");
+                return headers;
+            }
+        };
 
-                            after_login_intent.putExtra("code", "example_code");
+        queue.add(stringRequest);
+    }
 
-                            //String post_url = "https://" + client_id + ":" + secret_key + "@sandboxaccounts.campuse.ro/o/token";
-                            String post_url = "https://sandboxaccounts.campuse.ro/o/token";
+    @Override
+    protected void onResume() {
+        System.out.println("here");
 
-                            Log.v("LoginActivity", "Url: " + post_url);
+        super.onResume();
 
-                            postRequest(post_url, m.group(1));
+        // the intent filter defined in AndroidManifest will handle the return from ACTION_VIEW intent
+        Uri uri = getIntent().getData();
+        System.out.println(uri);
+        if (uri != null && uri.toString().startsWith(REDIRECT_URL.toLowerCase())) {
+            // use the parameter your API exposes for the code (mostly it's "code")
+            String code = uri.getQueryParameter("code");
+            System.out.println("Got code: " + code);
+            System.out.println("Here");
+            if (code != null) {
+                System.out.println("Code: " + code);
+                // get access token
+                /*LoginService loginService =
+                        ServiceGenerator.createService(LoginService.class, CLIENT_ID, SECRET_KEY);
+                Log.v("Passei", "passei");
 
-                            startActivity(after_login_intent);
-                        }
+                //Call<AccessToken> call = loginService.getAccessToken(code, REDIRECT_URL, "authorization_code");
+                Log.v("Passei2", "Passei2");
 
-                    return super.shouldOverrideUrlLoading(view, url);
-                }
-            });
+                Call<AccessToken> call = loginService.getAccessToken(code, REDIRECT_URL, "authorization_code");
 
-            setContentView(webview);
-            webview.loadUrl(url);
+                call.enqueue(new Callback<AccessToken>() {
+                    @Override
+                    public void onResponse(Call<AccessToken> call, retrofit2.Response<AccessToken> response) {
+                            System.out.println("Error: " + response.raw());
+                    }
+
+                    @Override
+                    public void onFailure(Call<AccessToken> call, Throwable t) {
+                        // Handle error
+                    }
+                });*/
+                authenticateUser(new VolleyCallback() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response: " + response);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        System.out.println("Falhou");
+                    }
+                }, code);
+            } else if (uri.getQueryParameter("error") != null) {
+                // show an error message here
+            }
         }
     }
 }
