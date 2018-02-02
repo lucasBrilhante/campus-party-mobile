@@ -12,11 +12,16 @@ import view.fragments.AgendaListFragment;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private List< List<Activity> > activities;
+    private List<String> dates;
+    private int numTabs;
 
     public SectionsPagerAdapter(FragmentManager fm,
-                                List< List<Activity> > activities) {
+                                List<List<Activity>> activities, List<String> dates,
+                                int numTabs) {
         super(fm);
         this.activities = activities;
+        this.dates = dates;
+        this.numTabs = numTabs;
     }
 
     @Override
@@ -26,7 +31,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        final int NUM_TABS = 2;
-        return NUM_TABS;
+        return numTabs;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position){
+        String date = dates.get(position);
+        return date;
     }
 }

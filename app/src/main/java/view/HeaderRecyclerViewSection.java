@@ -31,8 +31,12 @@ public class HeaderRecyclerViewSection extends StatelessSection{
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ItemViewHolder iHolder = (ItemViewHolder)holder;
-        iHolder.itemContent.setText(list.get(position).getName());
+        ItemViewHolder iHolder = (ItemViewHolder) holder;
+        Activity currentActivity = list.get(position);
+        iHolder.activityName.setText(currentActivity.getName());
+        iHolder.activityInfo.setText(currentActivity.getStartDate() + " - " +
+                                            currentActivity.getEndDate() + ", " +
+                                            currentActivity.getStage());
     }
 
     @Override

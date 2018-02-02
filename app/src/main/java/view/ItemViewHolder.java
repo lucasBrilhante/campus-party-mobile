@@ -8,10 +8,12 @@ import cpbr11.campuseromobile.R;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder{
 
-    public TextView itemContent;
+    public TextView activityName;
+    public TextView activityInfo;
 
     public ItemViewHolder(View itemView) {
         super(itemView);
-        itemContent = (TextView)itemView.findViewById(R.id.item_content);
+        activityName = (TextView) itemView.findViewById(R.id.name);
+        activityInfo = (TextView) itemView.findViewById(R.id.info);
     }
 }

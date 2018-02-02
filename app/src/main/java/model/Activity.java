@@ -4,11 +4,13 @@ public class Activity {
 
     private String name;
     private String startDate;
+    private String stage;
 
-    public Activity(String name, String startDate, String endDate) {
+    public Activity(String name, String startDate, String endDate, String stage) {
         setName(name);
         setStartDate(startDate);
         setEndDate(endDate);
+        setStage(stage);
     }
 
     private String endDate;
@@ -36,4 +38,13 @@ public class Activity {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
+
 }
