@@ -21,11 +21,12 @@
             android:layout_margin="10dp">
 
             <TextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Como encontrar seu valor como criador de conteudo?"
-                android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Large"/>
+                android:fontFamily="@font/montserrat"
+                android:text="Como encontrar seu valor como criador de conteudo?" />
 
             <TextView
                 android:layout_width="match_parent"
