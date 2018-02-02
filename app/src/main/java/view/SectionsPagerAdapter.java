@@ -27,7 +27,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new AgendaListFragment(activities.get(position))  ;
+        List<String> hours = new ArrayList<>();
+        hours.add("10:00");
+        hours.add("11:00");
+        hours.add("12:00");
+        return new AgendaListFragment(activities.get(position), hours)  ;
     }
 
     @Override
