@@ -1,7 +1,9 @@
 package view.activities;
 
+import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,6 +20,9 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cpbr11.campuseromobile.R;
 import view.SectionsPagerAdapter;
 
@@ -33,13 +38,32 @@ public class AgendaActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+
+        List<model.Activity> day1_activities = new ArrayList<>();
+        model.Activity a1 = new model.Activity("Teste 1", "10:00", "11:00");
+        model.Activity a2 = new model.Activity("Teste 1", "11:00", "12:00");
+        model.Activity a3 = new model.Activity("Teste 1", "12:00", "13:00");
+        day1_activities.add(a1);
+        day1_activities.add(a2);
+        day1_activities.add(a3);
+        List<model.Activity> day2_activities = new ArrayList<>();
+        model.Activity b1 = new model.Activity("Teste 2", "10:00", "11:00");
+        model.Activity b2 = new model.Activity("Teste 2", "11:00", "12:00");
+        model.Activity b3 = new model.Activity("Teste 2", "12:00", "13:00");
+        day2_activities.add(b1);
+        day2_activities.add(b2);
+        day2_activities.add(b3);
+        List<List<model.Activity>> all_activities = new ArrayList<>();
+        all_activities.add(day1_activities);
+        all_activities.add(day2_activities);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), all_activities);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabs = (TabLayout) this.findViewById(R.id.tabs);
+        tabs.setupWithViewPager(mViewPager);
     }
 
 

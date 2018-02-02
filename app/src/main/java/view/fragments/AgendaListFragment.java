@@ -1,31 +1,57 @@
 package view.fragments;
 
-/**
- * Created by izabela on 01/02/18.
- */
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cpbr11.campuseromobile.R;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import model.Activity;
+import view.HeaderRecyclerViewSection;
 
 public class AgendaListFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private List<Activity> activities;
 
     public AgendaListFragment() {
+
+    }
+
+    public AgendaListFragment(List<Activity> activities) {
+        this.activities = activities;
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_agenda, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+        RecyclerView sectionHeader = (RecyclerView) rootView.findViewById(R.id.add_header);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        sectionHeader.setLayoutManager(linearLayoutManager);
+        sectionHeader.setHasFixedSize(true);
+        SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
+
+        List<String> hours = new ArrayList<>();
+        hours.add("10:00");
+        hours.add("11:00");
+        hours.add("12:00");
+
+        for(String hour : hours){
+            HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, activities);
+            sectionAdapter.addSection(section);
+        }
+
+        sectionHeader.setAdapter(sectionAdapter);
+
         return rootView;
     }
 }
