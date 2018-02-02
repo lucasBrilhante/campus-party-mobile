@@ -20,8 +20,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import cpbr11.campuseromobile.R;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -46,9 +51,7 @@ public class AgendaListFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_agenda, container, false);
 
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url ="https://sandboxapi.campuse.ro/agenda/list/campus-party-brasil-2018/";
+
 
         RecyclerView sectionHeader = (RecyclerView) rootView.findViewById(R.id.add_header);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -69,36 +72,7 @@ public class AgendaListFragment extends Fragment {
         sectionHeader.setAdapter(sectionAdapter);
 
         // Request a string response from the provided URL.
-        JsonObjectRequest activityRequest = new JsonObjectRequest(Request.Method.GET, url,null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Display the first 500 characters of the response string.
-                        Log.d("DEU BOOOOOOOOOOOOOOOOM ",response.toString());
 
-
-                        try {
-                            int count = response.getInt("count");
-
-
-                            for(int i = 0;i<count;i++) {
-                                JSONObject activityJson = response.getJSONArray("results").getJSONObject(i);
-                                Activity activity = new Activity(activityJson.getString("slug"),activityJson.getString("start_date"),activityJson.getString("end_date"),activityJson.getString("get_type"));
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        sectionAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("EROOOOOOOOOOOOOOOOOR","DEU RUIM");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(activityRequest);
 
 
 
