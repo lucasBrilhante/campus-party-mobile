@@ -28,6 +28,7 @@ public class GetRequest {
             int status = connection.getResponseCode();
 
             switch (status) {
+                case 200:
                 case 201:
                     BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     StringBuilder sb = new StringBuilder();
