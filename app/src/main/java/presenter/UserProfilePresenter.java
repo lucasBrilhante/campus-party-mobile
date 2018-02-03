@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,10 +29,11 @@ public class UserProfilePresenter {
     private Context context;
     private RequestQueue requestQueue;
     private TextView nameTextView;
-    private TextView userInfoTextView;
+    private TextView userSpecialitiesTextView;
     private TextView emailTextView;
     private TextView localTextView;
     private TextView aboutTextView;
+    private TextView userInterestsTextView;
     private ImageView githubImageView;
     private ImageView instImageView;
     private ImageView linkedinImageView;
@@ -44,7 +43,7 @@ public class UserProfilePresenter {
     private LinearLayout localBox;
 
     public UserProfilePresenter(Context context, RequestQueue queue,
-                                TextView userInfoTextView, TextView emailTextView,
+                                TextView userSpecialities, TextView userInterestsTextView, TextView emailTextView,
                                 TextView localTextView, TextView aboutTextView, TextView nameTextView,
                                 ImageView githubImageView, ImageView instImageView,
                                 ImageView linkedinImageView, ImageView faceImageView,
@@ -52,7 +51,7 @@ public class UserProfilePresenter {
         this.context = context;
         this.requestQueue = queue;
         this.nameTextView = nameTextView;
-        this.userInfoTextView = userInfoTextView;
+        this.userSpecialitiesTextView = userSpecialities;
         this.emailTextView = emailTextView;
         this.localTextView = localTextView;
         this.aboutTextView = aboutTextView;
@@ -63,6 +62,7 @@ public class UserProfilePresenter {
         this.twitterImageView = twitterImageView;
         this.emailBox = emailBox;
         this.localBox = localBox;
+        this.userInterestsTextView = userInterestsTextView;
     }
 
     public void fillProfile() {
@@ -147,30 +147,38 @@ public class UserProfilePresenter {
                     setUserSocialMedia(facebook, faceImageView);
                     setUserSocialMedia(twitter, twitterImageView);
 
-                    String userInfo = "";
+                    String specialitiesAsString = "";
                     List<String> userSpecialities = profile.getSpecialities();
                     if(!userSpecialities.isEmpty()){
                         for(int i=0; i<userSpecialities.size(); i++) {
-                            userInfo = userInfo + userSpecialities.get(i);
+                            specialitiesAsString = specialitiesAsString + userSpecialities.get(i);
                             if(i >= 1 && i < userSpecialities.size()-1){
-                                userInfo = userInfo + ", ";
+                                specialitiesAsString = specialitiesAsString + ", ";
                             }
                         }
 
-                        userInfo = userInfo + "\n";
+                        userSpecialitiesTextView.setText(specialitiesAsString);
+                    }
+                    else {
+                        userSpecialitiesTextView.setVisibility(View.GONE);
                     }
 
-                    List<String> userInterestTags = profile.getInterest_tags();
-                    if(!userInterestTags.isEmpty()){
-                        for(int i=0; i<userInterestTags.size(); i++) {
-                            userInfo = userInfo + userInterestTags.get(i);
-                            if(i >= 1 && i < userInterestTags.size()-1){
-                                userInfo = userInfo + ", ";
+                    String interestsAsStrings = "";
+                    List<String> userInterests = profile.getInterest_tags();
+                    if(!userInterests.isEmpty()){
+                        for(int i=0; i<userInterests.size(); i++) {
+                            interestsAsStrings = interestsAsStrings + userInterests.get(i);
+                            if(i >= 1 && i < userInterests.size()-1){
+                                interestsAsStrings = interestsAsStrings + ", ";
                             }
                         }
+
+                        userInterestsTextView.setText(interestsAsStrings);
+                    }
+                    else {
+                        userInterestsTextView.setVisibility(View.GONE);
                     }
 
-                    userInfoTextView.setText(userInfo);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -193,7 +201,6 @@ public class UserProfilePresenter {
         else {
             box.setVisibility(View.GONE);
         }
-
     }
 
     private void setUserSocialMedia(final String mediaLink, ImageView mediaIcon) {
