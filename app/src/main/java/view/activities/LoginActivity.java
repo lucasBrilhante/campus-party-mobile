@@ -29,17 +29,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        // Set up the login form.
 
-        queue = Volley.newRequestQueue(this);
+        if(IntermediateAuthRequests.isUserLoggedIn(this)) {
+            Intent intent = new Intent(this, AgendaActivity.class);
+            startActivity(intent);
+        }
+        else {
+            setContentView(R.layout.activity_login);
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(this);
+            queue = Volley.newRequestQueue(this);
+
+            Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+            mEmailSignInButton.setOnClickListener(this);
+        }
     }
 
     @Override
     public void onClick(View view) {
+
         if (view.getId() == R.id.email_sign_in_button) {
             Intent intent = new Intent(
                     Intent.ACTION_VIEW,
@@ -48,8 +55,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             REDIRECT_URL + "&response_type=code"));
             startActivity(intent);
         }
-
-        //IntermediateAuthRequests.updateTokenAndExecuteAction(this, queue, "get_profile");
     }
 
     @Override

@@ -1,20 +1,23 @@
 package view;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import Presenter.ActivityPresenter;
 import cpbr11.campuseromobile.R;
-import dao.AppDatabase;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import model.Activity;
+import view.fragments.EventFragment;
 
 public class HeaderRecyclerViewSection extends StatelessSection{
 
@@ -25,6 +28,7 @@ public class HeaderRecyclerViewSection extends StatelessSection{
     private boolean isPersonalAgenda;
 
     public HeaderRecyclerViewSection(String title, List<Activity> list, Context context, Boolean isPersonalAgenda) {
+
         super(R.layout.header_layout, R.layout.item_layout);
         this.title = title;
         this.list = list;
@@ -107,10 +111,18 @@ public class HeaderRecyclerViewSection extends StatelessSection{
             @Override
             public void onClick(View v) {
                 Activity activity = list.get(position);
+                Fragment fragment = new EventFragment(activity);
+
+
+                AppCompatActivity act = (AppCompatActivity)context;
+
+                FragmentManager fragmentManager = act.getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.main_content, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
-
-
     }
 
     @Override
