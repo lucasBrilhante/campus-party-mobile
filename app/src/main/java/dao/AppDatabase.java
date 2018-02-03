@@ -7,7 +7,7 @@ import android.content.Context;
 
 import model.Activity;
 
-@Database(entities = {Activity.class}, version = 1)
+@Database(entities = {Activity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

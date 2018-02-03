@@ -57,7 +57,7 @@ public class AgendaListFragment extends Fragment {
             }
 
             if(!hourActivities.isEmpty()) {
-                HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, hourActivities);
+                HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, hourActivities,getContext());
                 sectionAdapter.addSection(section);
             }
         }

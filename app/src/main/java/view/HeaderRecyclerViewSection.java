@@ -1,12 +1,17 @@
 package view;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import Presenter.ActivityPresenter;
 import cpbr11.campuseromobile.R;
+import dao.AppDatabase;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import model.Activity;
 
@@ -15,11 +20,12 @@ public class HeaderRecyclerViewSection extends StatelessSection{
     private static final String TAG = HeaderRecyclerViewSection.class.getSimpleName();
     private String title;
     private List<Activity> list;
-
-    public HeaderRecyclerViewSection(String title, List<Activity> list) {
+    private Context context;
+    public HeaderRecyclerViewSection(String title, List<Activity> list, Context context) {
         super(R.layout.header_layout, R.layout.item_layout);
         this.title = title;
         this.list = list;
+        this.context = context;
     }
 
     @Override
@@ -33,8 +39,8 @@ public class HeaderRecyclerViewSection extends StatelessSection{
     }
 
     @Override
-    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ItemViewHolder iHolder = (ItemViewHolder) holder;
+    public void onBindItemViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        final ItemViewHolder iHolder = (ItemViewHolder) holder;
         Activity currentActivity = list.get(position);
         iHolder.activityName.setText(currentActivity.getName().split("#")[0]);
         String start = currentActivity.getStartDate().split("T")[1].split("Z")[0];
@@ -43,12 +49,29 @@ public class HeaderRecyclerViewSection extends StatelessSection{
                                      end.substring(0,end.length() -3) + ", " +
                                      currentActivity.getStage().split("cpbr11")[0].split("#CPBR11")[0]);
 
+        iHolder.icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = list.get(position);
+                try {
+                    ActivityPresenter.getInstance().insertActivies(context,activity);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //iHolder.icon.setColorFilter(000000);
+            }
+        });
+
         iHolder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity activity = list.get(position);
             }
         });
+
+
     }
 
     @Override

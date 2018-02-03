@@ -3,12 +3,13 @@ package view;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cpbr11.campuseromobile.R;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
-
+    public ImageView icon;
     public CardView card;
     public TextView activityName;
     public TextView activityInfo;
@@ -18,5 +19,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         activityName = (TextView) itemView.findViewById(R.id.name);
         activityInfo = (TextView) itemView.findViewById(R.id.info);
         card = (CardView) itemView.findViewById(R.id.direction_card_view);
+        icon = itemView.findViewById(R.id.add_to_agenda);
     }
 }

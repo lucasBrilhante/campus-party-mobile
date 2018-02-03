@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import Presenter.ActivityPresenter;
 import cpbr11.campuseromobile.R;
 import dao.AppDatabase;
 import model.Activity;
@@ -91,8 +92,13 @@ public class AgendaActivity extends BaseActivity {
         }else{
             List<Activity> allActivities = null;
 
-            allActivities = AppDatabase.getAppDatabase(getApplicationContext()).activityDao().getAll();
-
+            try {
+                allActivities = ActivityPresenter.getInstance().getActivities(getApplicationContext());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Comparator<Activity> cmp = new Comparator<Activity>() {
                 @Override
                 public int compare(Activity activity1, Activity activity2) {
