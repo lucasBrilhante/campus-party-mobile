@@ -54,8 +54,10 @@ public class AgendaActivity extends BaseActivity {
 
         for(Activity a : allActivities) {
             String[] parsed = a.getStartDate().split("T");
-            String day = parsed[0];
+            String daytmp = parsed[0];
             String hour = parsed[1];
+
+            String day = daytmp.split("-")[2] + "/" + daytmp.split("-")[1];
 
             if (hours.indexOf(hour) == -1)  {
                 hours.add(hour);
