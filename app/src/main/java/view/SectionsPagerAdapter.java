@@ -12,12 +12,12 @@ import view.fragments.AgendaListFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<ArrayList<Activity> > activities;
+    private List<List<Activity> > activities;
     private List<String> dates;
     private int numTabs;
 
     public SectionsPagerAdapter(FragmentManager fm,
-                                ArrayList<ArrayList<Activity>> activities, List<String> dates,
+                                List<List<Activity>> activities, List<String> dates,
                                 int numTabs) {
         super(fm);
         this.activities = activities;

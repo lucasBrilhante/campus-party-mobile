@@ -22,19 +22,18 @@ import view.SectionsPagerAdapter;
 import view.fragments.FilterFragment;
 import static android.support.design.widget.TabLayout.MODE_SCROLLABLE;
 
-public class AgendaActivity extends AppCompatActivity {
+public class AgendaActivity extends BaseActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+/*
         ArrayList<ArrayList<Activity>> allDays = new ArrayList<>();
         List<Activity> allActivities = null;
 
@@ -71,11 +70,39 @@ public class AgendaActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), allDays,
                 dates, allDays.size());
         mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);*/
+
+        List<model.Activity> day1_activities = new ArrayList<>();
+        model.Activity a1 = new model.Activity("Teste 1", "10:00", "11:00", "Stage");
+        model.Activity a2 = new model.Activity("Teste 1", "11:00", "12:00", "Stage");
+        model.Activity a3 = new model.Activity("Teste 1", "12:00", "13:00", "Stage");
+        day1_activities.add(a1);
+        day1_activities.add(a2);
+        day1_activities.add(a3);
+        List<model.Activity> day2_activities = new ArrayList<>();
+        model.Activity b1 = new model.Activity("Teste 2", "10:00", "11:00", "Stage");
+        model.Activity b2 = new model.Activity("Teste 2", "11:00", "12:00", "Stage");
+        model.Activity b3 = new model.Activity("Teste 2", "12:00", "13:00", "Stage");
+        day2_activities.add(b1);
+        day2_activities.add(b2);
+        day2_activities.add(b3);
+        List<List<model.Activity>> all_activities = new ArrayList<>();
+        all_activities.add(day1_activities);
+        all_activities.add(day2_activities);
+        List<String> dates = new ArrayList<>();
+        dates.add("01/02");
+        dates.add("02/02");
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), all_activities,
+                dates, all_activities.size());
+        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabs = (TabLayout) this.findViewById(R.id.tabs);
         tabs.setTabMode(MODE_SCROLLABLE);
         tabs.setupWithViewPager(mViewPager);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
