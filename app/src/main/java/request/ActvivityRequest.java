@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import model.Activity;
 
+import static java.lang.Math.min;
+
 public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activity>> {
 
     private ProgressDialog dialog;
@@ -30,7 +32,8 @@ public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activ
         ArrayList<Activity> allActivities = new ArrayList<>();
         String url = "https://sandboxapi.campuse.ro/agenda/list/campus-party-brasil-2018/";
 
-        while (hasNext) {
+        for  (int j = 0; j < 4; j++){
+        //while (hasNext) {
 
             JSONObject response = null;
             try {
@@ -38,7 +41,7 @@ public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activ
                 String responseAsString = request.getJSON(url,50000);
                 response = new JSONObject(responseAsString);
                 int size = response.getJSONArray("results").length();
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < min(size, 1); i++) {
                     JSONObject activityJson = response.getJSONArray("results").getJSONObject(i);
 
                     Activity activity = new Activity(activityJson.getString("title"),
