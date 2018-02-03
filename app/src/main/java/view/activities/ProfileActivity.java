@@ -16,9 +16,6 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_profile);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         TextView name = findViewById(R.id.user_name);
 
         RequestQueue queue = Volley.newRequestQueue(this);
