@@ -80,6 +80,7 @@ public class HeaderRecyclerViewSection extends StatelessSection{
                 try {
                     if(!isPersonalAgenda) {
                         ActivityPresenter.getInstance().insertActivies(context, activity);
+                        iHolder.icon.setImageResource(R.drawable.ic_added_act);
 
                         CharSequence text = "Adicionado com sucesso!";
                         int duration = Toast.LENGTH_SHORT;
