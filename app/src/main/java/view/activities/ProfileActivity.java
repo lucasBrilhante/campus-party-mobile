@@ -1,8 +1,6 @@
 package view.activities;
 
-import android.media.Image;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +21,8 @@ public class ProfileActivity extends BaseActivity {
         TextView email = findViewById(R.id.e_mail);
         TextView local = findViewById(R.id.local);
         TextView about = findViewById(R.id.about);
-        TextView info = findViewById(R.id.user_info);
+        TextView specialities = findViewById(R.id.user_specialities);
+        TextView interests = findViewById(R.id.user_interests);
         ImageView github = findViewById(R.id.github);
         ImageView insta = findViewById(R.id.insta);
         ImageView linkedin = findViewById(R.id.linkedin);
@@ -34,8 +33,8 @@ public class ProfileActivity extends BaseActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        IntermediateAuthRequests.updateTokenAndFillUserProfile(this, queue, name, info, email,
-                local, about, github, insta, linkedin, face, twitter, emailBox, localBox);
+        IntermediateAuthRequests.updateTokenAndFillUserProfile(this, queue, name, specialities,
+                email, local, about, interests, github, insta, linkedin, face, twitter, emailBox, localBox);
 
         super.onCreate(savedInstanceState);
     }

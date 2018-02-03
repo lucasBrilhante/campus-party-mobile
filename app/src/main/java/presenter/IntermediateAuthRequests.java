@@ -127,10 +127,11 @@ public class IntermediateAuthRequests {
 
     public static void updateTokenAndFillUserProfile(final Context context, final RequestQueue queue,
                                                      final TextView nameTextView,
-                                                     final TextView userInfoTextView,
+                                                     final TextView userSpecialitiesTextView,
                                                      final TextView emailTextView,
                                                      final TextView localTextView,
                                                      final TextView aboutTextView,
+                                                     final TextView userInterestsTextView,
                                                      final ImageView githubImageView,
                                                      final ImageView instImageView,
                                                      final ImageView linkedinImageView,
@@ -160,7 +161,7 @@ public class IntermediateAuthRequests {
                 IntermediateAuthRequests.saveToken(context, response);
 
                 UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue,
-                        userInfoTextView, emailTextView, localTextView, aboutTextView, nameTextView,
+                        userSpecialitiesTextView, userInterestsTextView, emailTextView, localTextView, aboutTextView, nameTextView,
                         githubImageView, instImageView, linkedinImageView, faceImageView, twitterImageView,
                         emailBox, localBox);
                 userProfilePresenter.fillProfile();

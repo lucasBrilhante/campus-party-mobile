@@ -60,14 +60,29 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/user_info"
+                    android:id="@+id/user_specialities"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/user_name"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
                     android:text="@string/loading"
                     android:textColor="#fff"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/user_interests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_specialities"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/loading"
+                    android:textColor="#fff"
+                    android:singleLine="true"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -164,8 +179,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="10"
-                    android:padding="5dp"
                     android:layout_margin="5dp"
+                    android:padding="5dp"
                     android:orientation="horizontal"
                     android:id="@+id/local_box"
                     android:background="@android:color/white">
