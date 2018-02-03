@@ -5,33 +5,40 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import model.Activity;
 import view.fragments.AgendaListFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<ArrayList<Activity> > activities;
-    private List<String> dates;
+    private Object[] activities;
+    private Object[] dates;
     private int numTabs;
 
     public SectionsPagerAdapter(FragmentManager fm,
-                                ArrayList<ArrayList<Activity>> activities, List<String> dates,
-                                int numTabs) {
+                                HashMap<String, List<Activity>> activities) {
         super(fm);
-        this.activities = activities;
-        this.dates = dates;
-        this.numTabs = numTabs;
+        this.activities = activities.values().toArray();
+        this.numTabs = activities.size();
+        this.dates = activities.keySet().toArray();
     }
 
     @Override
     public Fragment getItem(int position) {
         List<String> hours = new ArrayList<>();
-        hours.add("10:00");
-        hours.add("11:00");
-        hours.add("12:00");
-        return new AgendaListFragment(activities.get(position), hours)  ;
+
+        for(int i=0;i<24;i++){
+            String s = String.valueOf(i);
+            if (i < 10)
+                s = "0" + s;
+            hours.add(s + ":00");
+        }
+
+        return new AgendaListFragment((List<Activity>) activities[position], hours) ;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position){
-        String date = dates.get(position);
+        String date = dates[position].toString();
         return date;
     }
 }

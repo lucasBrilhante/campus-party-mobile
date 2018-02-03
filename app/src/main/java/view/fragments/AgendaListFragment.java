@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,7 @@ public class AgendaListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_agenda, container, false);
-
-
-
+        
         RecyclerView sectionHeader = (RecyclerView) rootView.findViewById(R.id.add_header);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         sectionHeader.setLayoutManager(linearLayoutManager);
@@ -46,8 +45,21 @@ public class AgendaListFragment extends Fragment {
         sectionAdapter = new SectionedRecyclerViewAdapter();
 
         for(String hour : hours){
-            HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, activities);
-            sectionAdapter.addSection(section);
+            List<Activity> hourActivities = new ArrayList<>();
+
+            for (Activity a : activities) {
+                String hourFirst = a.getStartDate().split("T")[1].split(":")[0];
+                String visualHourFirst = hour.split(":")[0];
+
+                if (hourFirst.equals(visualHourFirst)) {
+                    hourActivities.add(a);
+                }
+            }
+
+            if(!hourActivities.isEmpty()) {
+                HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, hourActivities);
+                sectionAdapter.addSection(section);
+            }
         }
 
         sectionHeader.setAdapter(sectionAdapter);

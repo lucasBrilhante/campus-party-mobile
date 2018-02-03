@@ -2,6 +2,8 @@ package view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
+
 import java.util.List;
 import cpbr11.campuseromobile.R;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
@@ -17,6 +19,25 @@ public class HeaderRecyclerViewSection extends StatelessSection{
         super(R.layout.header_layout, R.layout.item_layout);
         this.title = title;
         this.list = list;
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public TextView activityName;
+        public TextView activityInfo;
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            activityName = (TextView) itemView.findViewById(R.id.name);
+            activityInfo = (TextView) itemView.findViewById(R.id.info);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Activity a = list.get(this.getAdapterPosition());
+        }
     }
 
     @Override

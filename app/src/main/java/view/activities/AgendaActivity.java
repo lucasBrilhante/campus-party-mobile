@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -34,7 +35,6 @@ public class AgendaActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayList<ArrayList<Activity>> allDays = new ArrayList<>();
         List<Activity> allActivities = null;
 
         try {
@@ -47,28 +47,27 @@ public class AgendaActivity extends BaseActivity {
             ex.printStackTrace();
         }
 
-        List<String> dates = new ArrayList<>();
+        String curDay = null;
 
-        String dayOld = null;
-        int indexSave = -1;
+        HashMap<String, List<Activity>> activitiesByDay = new HashMap<>();
+        List<String> hours = new ArrayList<>();
 
-        for(Activity act : allActivities){
-            String dayAct = act.getStartDate().split("T")[0];
-            if(!dayAct.equals(dayOld)){
-                dates.add(dayAct);
-                Log.d("DATE",dayAct);
-                allDays.add(new ArrayList<Activity>());
-                indexSave++;
-                dayOld = dayAct;
+        for(Activity a : allActivities) {
+            String[] parsed = a.getStartDate().split("T");
+            String day = parsed[0];
+            String hour = parsed[1];
+
+            if (hours.indexOf(hour) == -1)  {
+                hours.add(hour);
             }
-            allDays.get(indexSave).add(act);
 
+            if (!activitiesByDay.containsKey(day)) {
+                activitiesByDay.put(day, new ArrayList<Activity>());
+            }
+            activitiesByDay.get(day).add(a);
         }
 
-        Log.d("List", allDays.toString());
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), allDays,
-                dates, allDays.size());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), activitiesByDay);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
