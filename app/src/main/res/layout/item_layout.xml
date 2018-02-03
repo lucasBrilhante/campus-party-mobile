@@ -17,24 +17,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:weightSum="10"
+            android:orientation="horizontal"
             android:layout_margin="10dp">
 
-            <TextView
-                android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Large"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="9"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
-                android:text="Como encontrar seu valor como criador de conteudo?" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Como encontrar seu valor como criador de conteudo?" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/info"
+                    android:text="Como encontrar seu valor como criador de conteudo?"
+                    style="@style/TextAppearance.AppCompat.Caption"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/add_to_agenda"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/info"
-                android:text="Como encontrar seu valor como criador de conteudo?"
-                style="@style/TextAppearance.AppCompat.Caption"/>
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/calendar_plus"/>
 
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 </LinearLayout>
