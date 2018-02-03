@@ -113,7 +113,7 @@ public class IntermediateAuthRequests {
 
                 if (TAG.equals("get_profile")) {
                     UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue);
-                    userProfilePresenter.getProfileJsonObject();
+                    userProfilePresenter.fillProfile();
                 }
             }
 
