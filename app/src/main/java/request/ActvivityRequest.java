@@ -41,10 +41,13 @@ public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activ
                 for (int i = 0; i < size; i++) {
                     JSONObject activityJson = response.getJSONArray("results").getJSONObject(i);
 
-                    Activity activity = new Activity(activityJson.getString("slug"),
+                    Activity activity = new Activity(activityJson.getString("title"),
+                            activityJson.getString("slug"),
+                            activityJson.getString("description"),
                             activityJson.getString("start_date"),
                             activityJson.getString("end_date"),
-                            activityJson.getString("get_type"));
+                            activityJson.getString("get_type"),
+                            activityJson.getString("stadium_name"));
 
                     allActivities.add(activity);
                 }
