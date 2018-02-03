@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import model.Activity;
 
@@ -28,7 +29,7 @@ public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activ
 
         boolean hasNext = true;
         ArrayList<Activity> allActivities = new ArrayList<>();
-        String url = "https://sandboxapi.campuse.ro/agenda/list/campus-party-brasil-2018/";
+        String url = "https://sandboxapi.campuse.ro/agenda/list/campus-party-brasil-2018?page=5";
 
         while (hasNext) {
 
@@ -66,6 +67,7 @@ public class ActvivityRequest extends AsyncTask<Void, List<Activity>, List<Activ
                 }else {
                     url = response.getString("next");
                 }
+                hasNext = false;
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException e){

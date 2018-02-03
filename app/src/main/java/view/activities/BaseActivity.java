@@ -78,10 +78,20 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getTitle().equals("Agenda")) {
-
+            Intent intent = new Intent(BaseActivity.this, AgendaActivity.class);
+            Bundle b = new Bundle();
+            b.putBoolean("AgendaPessoal", false);
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
         }
         else if(item.getTitle().equals("Agenda Pessoal")){
-
+            Intent intent = new Intent(BaseActivity.this, AgendaActivity.class);
+            Bundle b = new Bundle();
+            b.putBoolean("AgendaPessoal", true);
+            intent.putExtras(b); //Put your id to your next Intent
+            startActivity(intent);
+            finish();
         }
         else if(item.getTitle().equals("Meu Perfil")){
             Intent intent = new Intent(this, ProfileActivity.class);
