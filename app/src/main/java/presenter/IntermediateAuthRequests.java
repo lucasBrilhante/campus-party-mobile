@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import cpbr11.campuseromobile.VolleyCallback;
  * Created by igor on 02/02/18.
  */
 
-public class AuthenticateUserPresenter {
+public class IntermediateAuthRequests {
     private static final String REDIRECT_URL = "https://campuseroMobile.com/callback";
     private static final String CLIENT_ID = "q0FbZjHAvlB4dxQp8cNpWrK3X85BxSuBq4NgARPf";
     private static final String SECRET_KEY = "19QXI8Et5YM4ktmsapdsW5JWtIVObaw0VixSV06shSpqMXkW" +
@@ -49,13 +50,16 @@ public class AuthenticateUserPresenter {
             editor.putString("access_token", accessToken);
             editor.putString("refresh_token", refreshToken);
 
+            System.out.println("Atualizei: " + accessToken);
+
             editor.apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void authenticateUser(final Context context, final String code) {
+    public static void authenticateUser(final Context context, RequestQueue queue,
+                                        final String code) {
         final String URL = "https://sandboxaccounts.campuse.ro/o/token/";
 
         Map<String,String> post_params = new HashMap<>();
@@ -73,7 +77,7 @@ public class AuthenticateUserPresenter {
             @Override
             public void onResponse(String response) {
                 System.out.println("Response: " + response);
-                AuthenticateUserPresenter.saveToken(context, response);
+                IntermediateAuthRequests.saveToken(context, response);
             }
 
             @Override
@@ -82,11 +86,15 @@ public class AuthenticateUserPresenter {
             }
         };
 
-        HttpUtil.PostRequest(context, volleyCallback, URL, header_params, post_params);
+        HttpUtil.PostRequest(context, queue, volleyCallback, URL, header_params, post_params);
     }
 
-    public static void updateToken(final Context context, final String refreshToken) {
+    public static void updateTokenAndExecuteAction(final Context context, final RequestQueue queue, final String TAG) {
         final String URL = "https://sandboxaccounts.campuse.ro/o/token/";
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String refreshToken = sharedPref.getString("refresh_token", "Empty");
 
         Map<String,String> post_params = new HashMap<>();
         post_params.put("grant_type","refresh_token");
@@ -101,7 +109,12 @@ public class AuthenticateUserPresenter {
             @Override
             public void onResponse(String response) {
                 System.out.println("Response: " + response);
-                AuthenticateUserPresenter.saveToken(context, response);
+                IntermediateAuthRequests.saveToken(context, response);
+
+                if (TAG.equals("get_profile")) {
+                    UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue);
+                    userProfilePresenter.getProfileJsonObject();
+                }
             }
 
             @Override
@@ -110,6 +123,6 @@ public class AuthenticateUserPresenter {
             }
         };
 
-        HttpUtil.PostRequest(context, volleyCallback, URL, header_params, post_params);
+        HttpUtil.PostRequest(context, queue, volleyCallback, URL, header_params, post_params);
     }
 }
