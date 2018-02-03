@@ -46,6 +46,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         if(IntermediateAuthRequests.isUserLoggedIn(this)){
             MenuItem profile = menu.add("Meu Perfil");
             profile.setIcon(R.drawable.ic_person_black_24dp);
+
+            MenuItem localization = menu.add("Minha localização");
+            localization.setIcon(R.drawable.ic_location_on_black_24dp);
         }
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -95,6 +98,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(item.getTitle().equals("Meu Perfil")){
             Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        else if(item.getTitle().equals("Minha Localização")){
+            Intent intent = new Intent(this, MyLocationDemoActivity.class);
             startActivity(intent);
         }
         return false;
