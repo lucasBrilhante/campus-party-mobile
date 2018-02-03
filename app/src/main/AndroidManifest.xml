@@ -35,7 +35,8 @@
         <activity
             android:name="view.activities.AgendaActivity"
             android:label="@string/title_activity_agenda"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
