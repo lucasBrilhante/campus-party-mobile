@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
             android:text="@string/not_registered"
-            android:textColor="#212E6B"/>
+            android:textColor="#FFFFFF"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,6 +67,6 @@
             android:text="@string/sign_up"
             android:layout_marginLeft="10dp"
             android:textStyle="bold"
-            android:textColor="#212E6B"/>
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
 </LinearLayout>
