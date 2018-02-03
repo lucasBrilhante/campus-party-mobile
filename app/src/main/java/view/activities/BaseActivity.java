@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             MenuItem profile = menu.add("Meu Perfil");
             profile.setIcon(R.drawable.ic_person_black_24dp);
 
-            MenuItem localization = menu.add("Minha localização");
+            MenuItem localization = menu.add("Minha Localização");
             localization.setIcon(R.drawable.ic_location_on_black_24dp);
         }
 
