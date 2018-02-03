@@ -1,9 +1,15 @@
 package presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.telecom.Call;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -21,19 +27,42 @@ import java.util.Map;
 import cpbr11.campuseromobile.VolleyCallback;
 import model.Profile;
 
-/**
- * Created by igor on 03/02/18.
- */
-
 public class UserProfilePresenter {
     private Context context;
     private RequestQueue requestQueue;
     private TextView nameTextView;
+    private TextView userInfoTextView;
+    private TextView emailTextView;
+    private TextView localTextView;
+    private TextView aboutTextView;
+    private ImageView githubImageView;
+    private ImageView instImageView;
+    private ImageView linkedinImageView;
+    private ImageView faceImageView;
+    private ImageView twitterImageView;
+    private LinearLayout emailBox;
+    private LinearLayout localBox;
 
-    public UserProfilePresenter(Context context, RequestQueue queue, TextView nameTextView) {
+    public UserProfilePresenter(Context context, RequestQueue queue,
+                                TextView userInfoTextView, TextView emailTextView,
+                                TextView localTextView, TextView aboutTextView, TextView nameTextView,
+                                ImageView githubImageView, ImageView instImageView,
+                                ImageView linkedinImageView, ImageView faceImageView,
+                                ImageView twitterImageView, LinearLayout emailBox, LinearLayout localBox) {
         this.context = context;
         this.requestQueue = queue;
         this.nameTextView = nameTextView;
+        this.userInfoTextView = userInfoTextView;
+        this.emailTextView = emailTextView;
+        this.localTextView = localTextView;
+        this.aboutTextView = aboutTextView;
+        this.githubImageView = githubImageView;
+        this.instImageView = instImageView;
+        this.linkedinImageView = linkedinImageView;
+        this.faceImageView = faceImageView;
+        this.twitterImageView = twitterImageView;
+        this.emailBox = emailBox;
+        this.localBox = localBox;
     }
 
     public void fillProfile() {
@@ -78,6 +107,7 @@ public class UserProfilePresenter {
                     String zipCode = jsonObject.getString("zipcode");
                     String street = jsonObject.getString("street");
                     String streetNumber = jsonObject.getString("street_number");
+                    String about = jsonObject.getString("about");
 
                     List<String> interestTags = new ArrayList<>();
                     JSONArray interestTagsJsonArray = jsonObject.getJSONArray("interest_tags");
@@ -101,9 +131,46 @@ public class UserProfilePresenter {
                             flickr, linkedin, googleplus, whatsapp,
                             phoneNumber, mobilePhoneNumber, skype,
                             cityName, zipCode, street,
-                            streetNumber);
+                            streetNumber, about);
 
-                    nameTextView.setText(profile.getName());
+                    nameTextView.setText(profile.getName() + " " + profile.getLastName());
+                    aboutTextView.setText(profile.getAbout());
+
+                    String userEmail = profile.getEmail();
+                    setUserInfo(userEmail, emailTextView, emailBox);
+                    String userCity = profile.getCityName();
+                    setUserInfo(userCity, localTextView, localBox);
+
+                    setUserSocialMedia(github, githubImageView);
+                    setUserSocialMedia(instagram, instImageView);
+                    setUserSocialMedia(linkedin, linkedinImageView);
+                    setUserSocialMedia(facebook, faceImageView);
+                    setUserSocialMedia(twitter, twitterImageView);
+
+                    String userInfo = "";
+                    List<String> userSpecialities = profile.getSpecialities();
+                    if(!userSpecialities.isEmpty()){
+                        for(int i=0; i<userSpecialities.size(); i++) {
+                            userInfo = userInfo + userSpecialities.get(i);
+                            if(i >= 1 && i < userSpecialities.size()-1){
+                                userInfo = userInfo + ", ";
+                            }
+                        }
+
+                        userInfo = userInfo + "\n";
+                    }
+
+                    List<String> userInterestTags = profile.getInterest_tags();
+                    if(!userInterestTags.isEmpty()){
+                        for(int i=0; i<userInterestTags.size(); i++) {
+                            userInfo = userInfo + userInterestTags.get(i);
+                            if(i >= 1 && i < userInterestTags.size()-1){
+                                userInfo = userInfo + ", ";
+                            }
+                        }
+                    }
+
+                    userInfoTextView.setText(userInfo);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -117,5 +184,32 @@ public class UserProfilePresenter {
         };
 
         HttpUtil.GetRequest(context, requestQueue, volleyCallback, URL, header_params);
+    }
+
+    private void setUserInfo(String info, TextView field, LinearLayout box){
+        if(!info.equals("null") && !info.isEmpty()) {
+            field.setText(info);
+        }
+        else {
+            box.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void setUserSocialMedia(final String mediaLink, ImageView mediaIcon) {
+        if(!mediaLink.equals("null") && !mediaLink.isEmpty()){
+            mediaIcon.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(mediaLink));
+                    context.startActivity(intent);
+                }
+            });
+        }
+        else {
+            mediaIcon.setVisibility(View.GONE);
+        }
     }
 }

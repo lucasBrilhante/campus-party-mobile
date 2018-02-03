@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/app_name">
 
     </android.support.v7.widget.Toolbar>
@@ -54,7 +54,7 @@
                     android:layout_below="@id/user_profile_photo"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:text="Viral Android"
+                    android:text="@string/loading"
                     android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -66,7 +66,7 @@
                     android:layout_below="@+id/user_name"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:text="Android free tutorials and example"
+                    android:text="@string/loading"
                     android:textColor="#fff"
                     android:textSize="14sp" />
 
@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp"
+                        android:src="@drawable/github_box"
                         android:tint="@color/colorAccent"/>
 
                     <ImageView
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp"
+                        android:src="@drawable/instagram"
                         android:tint="@color/colorAccent"/>
 
                     <ImageView
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp"
+                        android:src="@drawable/twitter_box"
                         android:tint="@color/colorAccent"/>
 
                     <ImageView
@@ -118,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp"
+                        android:src="@drawable/linkedin_box"
                         android:tint="@color/colorAccent"/>
 
                     <ImageView
@@ -126,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp"
+                        android:src="@drawable/facebook_box"
                         android:tint="@color/colorAccent"/>
 
                 </LinearLayout>
@@ -136,6 +136,7 @@
                     android:layout_height="wrap_content"
                     android:weightSum="10"
                     android:padding="5dp"
+                    android:id="@+id/email_box"
                     android:layout_margin="5dp"
                     android:orientation="horizontal"
                     android:background="@android:color/white">
@@ -154,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:layout_gravity="center_vertical"
-                        android:text="cris-nere@gmail.com"
+                        android:text="@string/loading"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
                 </LinearLayout>
@@ -166,6 +167,7 @@
                     android:padding="5dp"
                     android:layout_margin="5dp"
                     android:orientation="horizontal"
+                    android:id="@+id/local_box"
                     android:background="@android:color/white">
 
                     <ImageView
@@ -182,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:layout_gravity="center_vertical"
-                        android:text="cris-nere@gmail.com"
+                        android:text="@string/loading"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
                 </LinearLayout>
@@ -194,7 +196,7 @@
                     android:padding="5dp"
                     android:layout_margin="5dp"
                     android:layout_gravity="center_vertical"
-                    android:text="cris-nere@gmail.com"
+                    android:text="@string/loading"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </LinearLayout>

@@ -3,6 +3,8 @@ package presenter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -123,7 +125,19 @@ public class IntermediateAuthRequests {
         HttpUtil.PostRequest(context, queue, volleyCallback, URL, header_params, post_params);
     }*/
 
-    public static void updateTokenAndFillUserProfile(final Context context, final RequestQueue queue, final TextView nameTextView) {
+    public static void updateTokenAndFillUserProfile(final Context context, final RequestQueue queue,
+                                                     final TextView nameTextView,
+                                                     final TextView userInfoTextView,
+                                                     final TextView emailTextView,
+                                                     final TextView localTextView,
+                                                     final TextView aboutTextView,
+                                                     final ImageView githubImageView,
+                                                     final ImageView instImageView,
+                                                     final ImageView linkedinImageView,
+                                                     final ImageView faceImageView,
+                                                     final ImageView twitterImageView,
+                                                     final LinearLayout emailBox,
+                                                     final LinearLayout localBox) {
         final String URL = "https://sandboxaccounts.campuse.ro/o/token/";
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -145,7 +159,10 @@ public class IntermediateAuthRequests {
                 System.out.println("Response: " + response);
                 IntermediateAuthRequests.saveToken(context, response);
 
-                UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue, nameTextView);
+                UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue,
+                        userInfoTextView, emailTextView, localTextView, aboutTextView, nameTextView,
+                        githubImageView, instImageView, linkedinImageView, faceImageView, twitterImageView,
+                        emailBox, localBox);
                 userProfilePresenter.fillProfile();
             }
 
