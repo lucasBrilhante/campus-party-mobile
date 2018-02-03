@@ -18,13 +18,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private Object[] activities;
     private Object[] dates;
     private int numTabs;
+    private boolean isPersonalAgenda;
 
     public SectionsPagerAdapter(FragmentManager fm,
-                                HashMap<String, List<Activity>> activities) {
+                                HashMap<String, List<Activity>> activities, boolean isPersonalAgenda) {
         super(fm);
         this.activities = activities.values().toArray();
         this.numTabs = activities.size();
         this.dates = activities.keySet().toArray();
+        this.isPersonalAgenda = isPersonalAgenda;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             hours.add(s + ":00");
         }
 
-        return new AgendaListFragment((List<Activity>) activities[position], hours) ;
+        return new AgendaListFragment((List<Activity>) activities[position], hours, isPersonalAgenda) ;
     }
 
     @Override

@@ -21,15 +21,16 @@ public class AgendaListFragment extends Fragment {
     private List<Activity> activities;
     private List<String> hours;
     SectionedRecyclerViewAdapter sectionAdapter;
-
+    private boolean isPersonalAgenda;
     public AgendaListFragment() {
 
     }
 
     @SuppressLint("ValidFragment")
-    public AgendaListFragment(List<Activity> activities, List<String> hours) {
+    public AgendaListFragment(List<Activity> activities, List<String> hours, boolean isPersonalAgenda) {
         this.activities = activities;
         this.hours = hours;
+        this.isPersonalAgenda = isPersonalAgenda;
 
     }
 
@@ -57,7 +58,7 @@ public class AgendaListFragment extends Fragment {
             }
 
             if(!hourActivities.isEmpty()) {
-                HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, hourActivities,getContext());
+                HeaderRecyclerViewSection section = new HeaderRecyclerViewSection(hour, hourActivities,getContext(), isPersonalAgenda);
                 sectionAdapter.addSection(section);
             }
         }

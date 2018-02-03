@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,11 +22,14 @@ public class HeaderRecyclerViewSection extends StatelessSection{
     private String title;
     private List<Activity> list;
     private Context context;
-    public HeaderRecyclerViewSection(String title, List<Activity> list, Context context) {
+    private boolean isPersonalAgenda;
+
+    public HeaderRecyclerViewSection(String title, List<Activity> list, Context context, Boolean isPersonalAgenda) {
         super(R.layout.header_layout, R.layout.item_layout);
         this.title = title;
         this.list = list;
         this.context = context;
+        this.isPersonalAgenda = isPersonalAgenda;
     }
 
     @Override
@@ -45,16 +49,51 @@ public class HeaderRecyclerViewSection extends StatelessSection{
         iHolder.activityName.setText(currentActivity.getName().split("#")[0]);
         String start = currentActivity.getStartDate().split("T")[1].split("Z")[0];
         String end = currentActivity.getEndDate().split("T")[1].split("Z")[0];
-        iHolder.activityInfo.setText(start.substring(0,start.length() -3) + " - " +
-                                     end.substring(0,end.length() -3) + ", " +
-                                     currentActivity.getStage().split("cpbr11")[0].split("#CPBR11")[0]);
-
+        iHolder.activityInfo.setText(start.substring(0, start.length() - 3) + " - " +
+                end.substring(0, end.length() - 3) + ", " +
+                currentActivity.getStage().split("cpbr11")[0].split("#CPBR11")[0]);
+        if (isPersonalAgenda){
+            iHolder.icon.setImageResource(R.drawable.ic_remove_act);
+        }else{
+            Activity activity = list.get(position);
+            try {
+                if(ActivityPresenter.getInstance().verifyActivity(activity, context)){
+                    iHolder.icon.setImageResource(R.drawable.ic_added_act);
+                } else {
+                    iHolder.icon.setImageResource(R.drawable.calendar_plus);
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         iHolder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity activity = list.get(position);
+
                 try {
-                    ActivityPresenter.getInstance().insertActivies(context,activity);
+                    if(!isPersonalAgenda) {
+                        ActivityPresenter.getInstance().insertActivies(context, activity);
+
+                        CharSequence text = "Adicionado com sucesso!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                    }else {
+                        ActivityPresenter.getInstance().removeActivity(context, activity);
+                        list.remove(position);
+
+                        CharSequence text = "Removido com sucesso!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {

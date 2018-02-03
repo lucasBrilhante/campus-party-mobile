@@ -82,7 +82,7 @@ public class AgendaActivity extends BaseActivity {
                 }
             }
 
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), activitiesByDay);
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), activitiesByDay, isPersonalAgenda);
             mViewPager = (ViewPager) findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -131,7 +131,7 @@ public class AgendaActivity extends BaseActivity {
             }
 
 
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), activitiesByDayPersonal);
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), activitiesByDayPersonal, isPersonalAgenda);
             mViewPager = (ViewPager) findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
 
