@@ -1,6 +1,7 @@
 package view.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cpbr11.campuseromobile.R;
+import presenter.IntermediateAuthRequests;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +42,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
         MenuItem personalAgenda = menu.add("Agenda Pessoal");
         personalAgenda.setIcon(R.drawable.ic_today_black_24dp);
+
+        if(IntermediateAuthRequests.isUserLoggedIn(this)){
+            MenuItem profile = menu.add("Meu Perfil");
+            profile.setIcon(R.drawable.ic_person_black_24dp);
+        }
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         super.onCreate(savedInstanceState);
     }
@@ -68,6 +77,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getTitle().equals("Agenda")) {
+
+        }
+        else if(item.getTitle().equals("Agenda Pessoal")){
+
+        }
+        else if(item.getTitle().equals("Meu Perfil")){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
         return false;
     }
 }

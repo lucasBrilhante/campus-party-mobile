@@ -1,5 +1,9 @@
 package view.activities;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,16 +40,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        /*if (view.getId() == R.id.email_sign_in_button) {
+        if (view.getId() == R.id.email_sign_in_button) {
             Intent intent = new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(API_BASE_URL + "/authorize" +
                             "?client_id=" + CLIENT_ID + "&redirect_uri=" +
                             REDIRECT_URL + "&response_type=code"));
             startActivity(intent);
-        }*/
+        }
 
-        IntermediateAuthRequests.updateTokenAndExecuteAction(this, queue, "get_profile");
+        //IntermediateAuthRequests.updateTokenAndExecuteAction(this, queue, "get_profile");
     }
 
     @Override
@@ -61,6 +65,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 System.out.println("Code: " + code);
 
                 IntermediateAuthRequests.authenticateUser(this, queue, code);
+
+                Intent intent = new Intent(this, AgendaActivity.class);
+                startActivity(intent);
+
             } else if (uri.getQueryParameter("error") != null) {
                 System.out.println("Error");
             }

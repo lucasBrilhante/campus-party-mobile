@@ -3,6 +3,7 @@ package presenter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -15,10 +16,6 @@ import java.util.Map;
 
 import cpbr11.campuseromobile.VolleyCallback;
 
-/**
- * Created by igor on 02/02/18.
- */
-
 public class IntermediateAuthRequests {
     private static final String REDIRECT_URL = "https://campuseroMobile.com/callback";
     private static final String CLIENT_ID = "q0FbZjHAvlB4dxQp8cNpWrK3X85BxSuBq4NgARPf";
@@ -26,7 +23,7 @@ public class IntermediateAuthRequests {
             "XnFhezONi0Y1D5w8bwd9Qmd7dsmiMxDH6gLCnj6APSXDkAGTbaMo30fd6oi" +
             "x4Tm6Ny47hA7CaF2GGcPm";
 
-    private static boolean isUserLoggedIn(Context context) {
+    public static boolean isUserLoggedIn(Context context) {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         boolean loggedIn = sharedPref.getBoolean("logged_in", false);
@@ -89,7 +86,7 @@ public class IntermediateAuthRequests {
         HttpUtil.PostRequest(context, queue, volleyCallback, URL, header_params, post_params);
     }
 
-    public static void updateTokenAndExecuteAction(final Context context, final RequestQueue queue, final String TAG) {
+    /*public static void updateTokenAndExecuteAction(final Context context, final RequestQueue queue, final String TAG) {
         final String URL = "https://sandboxaccounts.campuse.ro/o/token/";
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -115,6 +112,41 @@ public class IntermediateAuthRequests {
                     UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue);
                     userProfilePresenter.fillProfile();
                 }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("Error");
+            }
+        };
+
+        HttpUtil.PostRequest(context, queue, volleyCallback, URL, header_params, post_params);
+    }*/
+
+    public static void updateTokenAndFillUserProfile(final Context context, final RequestQueue queue, final TextView nameTextView) {
+        final String URL = "https://sandboxaccounts.campuse.ro/o/token/";
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String refreshToken = sharedPref.getString("refresh_token", "Empty");
+
+        Map<String,String> post_params = new HashMap<>();
+        post_params.put("grant_type","refresh_token");
+        post_params.put("refresh_token", refreshToken);
+        post_params.put("client_id", CLIENT_ID);
+
+        Map<String,String> header_params = new HashMap<>();
+        header_params.put("Accept","application/json");
+        header_params.put("Content-Type","application/x-www-form-urlencoded");
+
+        final VolleyCallback volleyCallback = new VolleyCallback() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Response: " + response);
+                IntermediateAuthRequests.saveToken(context, response);
+
+                UserProfilePresenter userProfilePresenter = new UserProfilePresenter(context, queue, nameTextView);
+                userProfilePresenter.fillProfile();
             }
 
             @Override

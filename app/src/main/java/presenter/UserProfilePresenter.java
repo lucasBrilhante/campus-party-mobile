@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.telecom.Call;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -27,10 +28,12 @@ import model.Profile;
 public class UserProfilePresenter {
     private Context context;
     private RequestQueue requestQueue;
+    private TextView nameTextView;
 
-    public UserProfilePresenter(Context context, RequestQueue queue) {
+    public UserProfilePresenter(Context context, RequestQueue queue, TextView nameTextView) {
         this.context = context;
         this.requestQueue = queue;
+        this.nameTextView = nameTextView;
     }
 
     public void fillProfile() {
@@ -99,6 +102,9 @@ public class UserProfilePresenter {
                             phoneNumber, mobilePhoneNumber, skype,
                             cityName, zipCode, street,
                             streetNumber);
+
+                    nameTextView.setText(profile.getName());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
