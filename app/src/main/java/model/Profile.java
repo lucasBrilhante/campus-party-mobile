@@ -34,6 +34,7 @@ public class Profile {
     private String zipCode;
     private String street;
     private String streetNumber;
+    private String about;
 
     public Profile(String username, String email, String name, String lastName,
                    String gender, String occupation, List<String> interest_tags,
@@ -42,7 +43,7 @@ public class Profile {
                    String flickr, String linkedin, String googleplus, String whatsapp,
                    String phoneNumber, String mobilePhoneNumber, String skype,
                    String cityName, String zipCode, String street,
-                   String streetNumber) {
+                   String streetNumber, String about) {
         setUsername(username);
         setEmail(email);
         setName(name);
@@ -68,6 +69,15 @@ public class Profile {
         setZipCode(zipCode);
         setStreet(street);
         setStreetNumber(streetNumber);
+        setAbout(about);
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public String getUsername() {

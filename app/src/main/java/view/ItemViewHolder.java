@@ -1,13 +1,15 @@
-/*package view;
+package view;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import cpbr11.campuseromobile.R;
 
-public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ItemViewHolder extends RecyclerView.ViewHolder {
 
+    public CardView card;
     public TextView activityName;
     public TextView activityInfo;
 
@@ -15,12 +17,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         super(itemView);
         activityName = (TextView) itemView.findViewById(R.id.name);
         activityInfo = (TextView) itemView.findViewById(R.id.info);
-
-        itemView.setOnClickListener(this);
+        card = (CardView) itemView.findViewById(R.id.direction_card_view);
     }
-
-    @Override
-    public void onClick(View view) {
-        this.getAdapterPosition()
-    }
-}*/
+}
