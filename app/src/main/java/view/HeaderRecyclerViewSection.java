@@ -1,6 +1,7 @@
 package view;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,25 +22,6 @@ public class HeaderRecyclerViewSection extends StatelessSection{
         this.list = list;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public TextView activityName;
-        public TextView activityInfo;
-
-        public ItemViewHolder(View itemView) {
-            super(itemView);
-            activityName = (TextView) itemView.findViewById(R.id.name);
-            activityInfo = (TextView) itemView.findViewById(R.id.info);
-
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Activity a = list.get(this.getAdapterPosition());
-        }
-    }
-
     @Override
     public int getContentItemsTotal() {
         return list.size();
@@ -51,7 +33,7 @@ public class HeaderRecyclerViewSection extends StatelessSection{
     }
 
     @Override
-    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ItemViewHolder iHolder = (ItemViewHolder) holder;
         Activity currentActivity = list.get(position);
         iHolder.activityName.setText(currentActivity.getName().split("#")[0]);
@@ -60,6 +42,13 @@ public class HeaderRecyclerViewSection extends StatelessSection{
         iHolder.activityInfo.setText(start.substring(0,start.length() -3) + " - " +
                                      end.substring(0,end.length() -3) + ", " +
                                      currentActivity.getStage().split("cpbr11")[0].split("#CPBR11")[0]);
+
+        iHolder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = list.get(position);
+            }
+        });
     }
 
     @Override
